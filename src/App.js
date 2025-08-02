@@ -1,15 +1,21 @@
 
 import './App.css';
+import { IoCartOutline } from "react-icons/io5";
 import { FaSearch } from "react-icons/fa";
 import { useEffect, useState, useRef, startTransition } from 'react';
 import { auth, signOut } from './firebase';
+  import image from './images/Vector (Stroke).svg';
+  import image1 from './images/Vector (Stroke) (1).svg';
+  import image2 from './images/Vector (Stroke) (2).svg';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from 'firebase/auth'; 
 import Shop from './shop';
+import { FaTelegramPlane, FaWhatsapp, FaVk } from 'react-icons/fa';
 import ProductCards from './companents/ProductCards';
+import logo from './images/Group 1 (1).png';
 // import LikesProduct from './companents/LikesProduct';
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -110,13 +116,24 @@ function App() {
     localStorage.setItem('mystationery', JSON.stringify(stationeries));
   }, [stationeries]);
 
+  const deleteStationeryHandler = (index) => {
+  const updatedStationeries = stationeries.filter((_, i) => i !== index);
+  setStationeries(updatedStationeries);
+};
+
   return (
     <div className="App">
       <header>
-        <div className="logo">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj1maotx9nF53KGnUTKa91rc65qPVzBi6MEw&s" alt="" />
-          <h1>Stationery Shop</h1>
-        </div>
+          <img className='logo' src={logo} alt="" />
+          
+         <ul>
+          <li>Одежда</li>
+          <li>Обувь</li>
+          <li>Аксессуары</li>
+          <li>Бренды</li>
+          <li>Расчет стоимости</li>
+          <li>Информация</li>
+         </ul>
 
         <div className="search">
           <div className="search-input">
@@ -145,8 +162,9 @@ function App() {
           ) : (
             <button className='headerbtn' onClick={toggleModal}>Sign In</button>
           )}
+           <IoCartOutline />
         </div>
-      </header>c
+      </header>
 
       {showModal && (
         <div className="modal_box">
@@ -224,8 +242,122 @@ function App() {
         </div>
       ) : null}
 
-      <ProductCards stationeries={stationeries} />
+
+
+      {/* <ProductCards stationeries={stationeries} /> */}
+      <ProductCards
+  stationeries={stationeries}
+  onDelete={deleteStationeryHandler}
+  user={user}   
+/>
+
        {user && <Shop user={user} />}
+       
+       <section className="about-section">
+      <div className="about-left">
+        <h2 className="about-title">
+          О ИНТЕРНЕТ-<br />МАГАЗИНЕ XWEAR
+        </h2>
+        <p>
+          Команда XWEAR предоставляет услугу доставки только оригинальных товаров с крупнейшего китайского маркетплейса Poizon, чтобы наши клиенты экономили более 40% на каждой покупке.
+        </p>
+        <p>
+          Работаем без посредников, благодаря чему можем предоставлять лучшую цену. Быстрая, бесплатная доставка.
+        </p>
+        <p>
+          Сайт, на котором можно будет удобно оформить покупку, не скачивая китайское мобильное приложение Poizon, с удобной фильтрацией огромного количества товаров, а так же с возможностью сразу увидеть окончательную цену товара.
+        </p>
+      </div>
+
+      <div className="about-right">
+        <div className="feature">
+          <img src={image} alt="box" className="icon" />
+          <div>
+            <h3>БЕСПЛАТНАЯ ДОСТАВКА ДО РОССИИ</h3>
+            <p>Доставим вам заказ абсолютно бесплатно до России</p>
+          </div>
+        </div>
+        <div className="feature">
+          <img src={image1} alt="users" className="icon" />
+          <div>
+            <h3>МЫ РАБОТАЕМ БЕЗ ПОСРЕДНИКОВ</h3>
+            <p>Между нами и клиентом нет третьего лишнего</p>
+          </div>
+        </div>
+        <div className="feature">
+          <img src={image2} alt="calendar" className="icon" />
+          <div>
+            <h3>ПРОСТОТА В ЗАКАЗЕ И ИСПОЛЬЗОВАНИИ</h3>
+            <p>Для заказа с Poizon не нужно никаких приложений</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <footer className="footer">
+      <div className="container">
+
+        <div className="column">
+          <h4>КАТАЛОГ</h4>
+          <ul>
+            <li><a href="#">Одежда</a></li>
+            <li><a href="#">Обувь</a></li>
+            <li><a href="#">Аксессуары</a></li>
+            <li><a href="#">Расчет стоимости</a></li>
+          </ul>
+          <div className="logo">XWEAR</div>
+        </div>
+
+        <div className="column">
+          <h4>ИНФОРМАЦИЯ</h4>
+          <ul>
+            <li><a href="#">Блог</a></li>
+            <li><a href="#">Контакты</a></li>
+            <li><a href="#">Доставка</a></li>
+            <li><a href="#">Оплата</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+          <div className="dev">РАЗРАБОТКА САЙТА<br />READYOCODE.RU</div>
+        </div>
+
+        <div className="column">
+          <h4>КОНТАКТЫ</h4>
+          <p><a href="mailto:info@xwear.info">info@xwear.info</a></p>
+          <p><a href="tel:+79936083885">+7 993 608 38 85</a></p>
+
+          <div className="section-title">МЕССЕНДЖЕРЫ</div>
+          <div className="icons">
+            <FaTelegramPlane className="icon telegram" />
+            <FaWhatsapp className="icon whatsapp" />
+           </div>
+
+          <div className="section-title">НАШИ СОЦСЕТИ</div>
+          <div className="icons">
+            <FaVk className="icon vk" />
+          </div>
+        </div>
+
+        <div className="column">
+          <h4>ПОДПИСКА НА НОВОСТИ</h4>
+          <p>Будьте в курсе скидок и новостей</p>
+          <form className="subscribe-form">
+            <input type="email" placeholder="Ваш email" required />
+            <button type="submit">➝</button>
+          </form>
+          <p className="small">
+            Подписываясь на рассылку вы<br />
+            соглашаетесь с обработкой персональных<br />
+            данных
+          </p>
+          <a href="#">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a><br />
+          <a href="#">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a>
+        </div>
+
+      </div>
+    </footer>
+ 
+
+
 
     </div>
   );
